@@ -1,0 +1,207 @@
+using Gtk 4.0;
+using Adw 1;
+
+menu testmenu {
+    item ("label")
+    item ("label", "action")
+    item ("label", "action", "icon")
+}
+
+template $Window: Adw.ApplicationWindow {
+    default-width: 600;
+    default-height: 500;
+    width-request: 360;
+    height-request: 300;
+    title: _("Icon Theme Browser");
+    selected-icon: "";
+    icon-size: 28;
+    visible-child-name: "flowbox";
+
+    Adw.ToolbarView view {
+        top-bar-style: raised;
+        bottom-bar-style: raised;
+
+        [top]
+        Adw.HeaderBar {
+            centering-policy: strict;
+
+            [start]
+            Button {
+                styles [
+                    "suggested-action",
+                ]
+
+                visible: bind $has_selected(template.selected-icon) as <bool>;
+                clicked => $copy_to_clipboard();
+
+                Box {
+                    spacing: 4;
+
+                    Image {
+                        icon-name: "edit-copy-symbolic";
+                    }
+
+                    Label {
+                        label: _("Copy");
+                    }
+                }
+            }
+
+            [title]
+            Adw.Clamp {
+                tightening-threshold: 400;
+                hexpand: true;
+
+                SearchEntry searchentry {
+                    search-delay: 200;
+                    placeholder-text: _("Search for icons by name");
+                    search-changed => $on_searchentry_search_changed();
+                    search-started => $on_searchentry_search_started();
+                }
+            }
+
+            [end]
+            MenuButton {
+                icon-name: "open-menu-symbolic";
+
+                popover: Popover {
+                    Box {
+                        orientation: vertical;
+                        spacing: 4;
+
+                        Label {
+                            label: _("Settings");
+
+                            styles [
+                                "heading"
+                            ]
+                        }
+
+                        Separator {
+                            orientation: horizontal;
+                        }
+
+                        Box {
+                            styles [
+                                "spin-menu"
+                            ]
+
+                            spacing: 4;
+
+                            Label {
+                                label: _("Icon Size");
+                                xalign: .3;
+                                hexpand: true;
+                            }
+
+                            Button {
+                                Image {
+                                    icon-name: "list-add-symbolic";
+                                    pixel-size: 14;
+                                }
+
+                                styles [
+                                    "circular"
+                                ]
+
+                                clicked => $increase_icon_size();
+                            }
+
+                            Button {
+                                Image {
+                                    icon-name: "list-remove-symbolic";
+                                    pixel-size: 14;
+                                }
+
+                                styles [
+                                    "circular"
+                                ]
+
+                                clicked => $decrease_icon_size();
+                            }
+                        }
+
+                        Separator {
+                            orientation: horizontal;
+                        }
+
+                        Label {
+                            label: _("Icon Theme");
+
+                            styles [
+                                "heading"
+                            ]
+                        }
+
+                        Separator {
+                            orientation: horizontal;
+                        }
+
+                        Box iconmenu {
+                            orientation: vertical;
+                            // filled in code
+                        }
+                    }
+                };
+            }
+        }
+
+        Adw.ToastOverlay toastoverlay {
+            Gtk.ScrolledWindow {
+                hscrollbar-policy: never;
+                vscrollbar-policy: automatic;
+
+                Stack {
+                    visible-child-name: bind template.visible-child-name bidirectional;
+
+                    StackPage {
+                        name: "flowbox";
+
+                        child: FlowBox flowbox {
+                            name: "flowbox";
+                            valign: start;
+                            margin-top: 12;
+                            margin-bottom: 12;
+                            margin-end: 32;
+                            margin-start: 32;
+                            column-spacing: 4;
+                            row-spacing: 4;
+                            max-children-per-line: 99;
+                            child-activated => $on_flowbox_child_activated();
+                        };
+                    }
+
+                    StackPage {
+                        name: "not-found";
+
+                        child: Adw.StatusPage {
+                            icon-name: "system-search-symbolic";
+                            title: _("No Results found");
+                            description: _("Try a different search");
+                        };
+                    }
+                }
+            }
+        }
+
+        [bottom]
+        Box {
+            halign: center;
+            hexpand: true;
+            margin-top: 8;
+            margin-bottom: 8;
+            spacing: 12;
+            visible: bind $has_selected(template.selected-icon) as <bool>;
+
+            Image {
+                icon-name: bind template.selected-icon;
+                pixel-size: 24;
+            }
+
+            Label {
+                label: bind template.selected-icon;
+                selectable: true;
+            }
+        }
+    }
+}

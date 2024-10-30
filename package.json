@@ -1,0 +1,27 @@
+{
+    "name": "icon-theme-browser",
+    "type": "module",
+    "author": "Aylur",
+    "license": "GPL",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Aylur/icon-theme-browser.git"
+    },
+    "funding": {
+        "type": "kofi",
+        "url": "https://ko-fi.com/aylur"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.13.0",
+        "@stylistic/eslint-plugin": "^2.9.0",
+        "@ts-for-gir/cli": "4.0.0-beta.15",
+        "@types/eslint__js": "^8.42.3",
+        "eslint": "^8.57.1",
+        "typescript": "^5.6.3",
+        "typescript-eslint": "^7.18.0"
+    },
+    "scripts": {
+        "lint": "eslint . --fix",
+        "types": "ts-for-gir generate -o @girs"
+    }
+}

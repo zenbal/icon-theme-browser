@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Icon Theme Library
+Comment=Find the right icon to use in your application
+Type=Application
+Exec=@EXEC@
+Terminal=false
+Categories=Utility;GTK;
+Keywords=Icon;Library;Icons;Symbolic;GTK;
+Icon=application-x-executable
+StartupNotify=true

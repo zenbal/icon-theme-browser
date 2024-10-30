@@ -1,0 +1,5 @@
+@girs/
+build/
+result
+node_modules/
+test.sh

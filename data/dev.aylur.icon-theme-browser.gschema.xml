@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schemalist>
+  <schema path="/dev/aylur/icon-theme-browser/" id="dev.aylur.icon-theme-browser">
+    <key name="icon-size" type="i">
+      <default>28</default>
+      <summary>Size of icons in the list view.</summary>
+    </key>
+    <key name="copy-on-click" type="b">
+      <default>true</default>
+      <summary>Copy to clipboard on selection.</summary>
+    </key>
+    <key name="max-items" type="i">
+      <default>999</default>
+      <summary>Maximum number of icons to show.</summary>
+    </key>
+  </schema>
+</schemalist>
