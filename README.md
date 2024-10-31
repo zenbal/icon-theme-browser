@@ -25,3 +25,4 @@ meson install -C build
 - [ ] preferences page
 - [ ] optimize somehow (currently lags when all icons are shown)
 - [ ] preset categories similar to [icon-library](https://gitlab.gnome.org/World/design/icon-library)
+- [ ] add desktop icon
