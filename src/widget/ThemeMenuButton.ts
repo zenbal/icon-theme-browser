@@ -8,7 +8,7 @@ interface ThemeMenuButtonProps extends Gtk.Button.ConstructorProps {
 
 @register({
     GTypeName: "ThemeMenuButton",
-    Template: "resource:///dev/aylur/icon-theme-browser/ui/ThemeMenuButton.ui",
+    Template: `${resource}/ui/ThemeMenuButton.ui`,
 })
 export default class ThemeMenuButton extends Gtk.Button {
     @property(String) declare theme_name: string

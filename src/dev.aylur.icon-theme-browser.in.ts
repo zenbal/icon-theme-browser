@@ -11,7 +11,10 @@ imports.package.init({
 
 pkg.initGettext()
 
-// @ts-expect-error missing path
-const module = await import("resource:///dev/aylur/icon-theme-browser/icon-theme-browser.js")
+Object.assign(globalThis, {
+    resource: "resource://@RESOURCE@",
+})
+
+const module = await import(`${resource}/icon-theme-browser.js`)
 const exitCode = await module.default.main([programInvocationName, ...programArgs])
 exit(exitCode)

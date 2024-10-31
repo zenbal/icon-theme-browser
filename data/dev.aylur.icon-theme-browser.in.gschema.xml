@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <schemalist>
-  <schema path="/dev/aylur/icon-theme-browser/" id="dev.aylur.icon-theme-browser">
+  <schema path="@RESOURCE@/" id="@APP_ID@">
     <key name="icon-size" type="i">
       <default>28</default>
       <summary>Size of icons in the list view.</summary>

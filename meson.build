@@ -1,6 +1,7 @@
 project('icon-theme-browser')
 
 app_id = 'dev.aylur.icon-theme-browser'
+resource = '/dev/aylur/icon-theme-browser'
 
 prefix = get_option('prefix')
 datadir = prefix / get_option('datadir')

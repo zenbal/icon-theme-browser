@@ -6,6 +6,7 @@ configure_file(
     'APP_ID': app_id,
     'PACKAGE_VERSION': meson.project_version(),
     'PREFIX': prefix,
+    'RESOURCE': resource,
   },
   install: true,
   install_dir: pkgdatadir,
@@ -33,7 +34,14 @@ bundle = custom_target(
 
 import('gnome').compile_resources(
   app_id + '.src',
-  app_id + '.src.gresource.xml',
+  configure_file(
+    input: app_id + '.in.src.gresource.xml',
+    output: app_id + '.src.gresource.xml',
+    configuration: {
+      'RESOURCE': resource,
+      'APP_ID': app_id,
+    },
+  ),
   dependencies: bundle,
   source_dir: meson.project_build_root() / 'resource',
   gresource_bundle: true,

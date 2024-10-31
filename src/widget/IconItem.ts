@@ -8,7 +8,7 @@ interface IconProps extends Gtk.FlowBoxChild {
 
 @register({
     GTypeName: "IconItem",
-    Template: "resource:///dev/aylur/icon-theme-browser/ui/IconItem.ui",
+    Template: `${resource}/ui/IconItem.ui`,
 })
 export default class IconItem extends Gtk.FlowBoxChild {
     @property(String) declare icon_name: string

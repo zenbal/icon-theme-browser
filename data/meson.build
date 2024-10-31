@@ -17,7 +17,11 @@ blueprints = custom_target(
 
 import('gnome').compile_resources(
   app_id + '.data',
-  app_id + '.data.gresource.xml',
+  configure_file(
+    input: app_id + '.in.data.gresource.xml',
+    output: app_id + '.data.gresource.xml',
+    configuration: {'RESOURCE': resource},
+  ),
   dependencies: blueprints,
   source_dir: meson.project_build_root() / 'ui',
   gresource_bundle: true,
@@ -36,14 +40,19 @@ configure_file(
 glib_compile_schemas = find_program('glib-compile-schemas')
 if glib_compile_schemas.found()
   test(
-    'validate-gschema', glib_compile_schemas,
-    args: [
-      '--strict', '--dry-run', meson.current_source_dir()
-    ]
+    'validate-gschema',
+    glib_compile_schemas,
+    args: ['--strict', '--dry-run', meson.current_source_dir()],
   )
 endif
 
-install_data(
-  app_id + '.gschema.xml',
+configure_file(
+  input: app_id + '.in.gschema.xml',
+  output: app_id + '.gschema.xml',
+  configuration: {
+    'RESOURCE': resource,
+    'APP_ID': app_id,
+  },
+  install: true,
   install_dir: datadir / 'glib-2.0' / 'schemas',
 )

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/dev/aylur/icon-theme-browser">
+  <gresource prefix="@RESOURCE@">
     <file>icon-theme-browser.js</file>
   </gresource>
 </gresources>

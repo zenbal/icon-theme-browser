@@ -3,6 +3,10 @@ import Adw from "gi://Adw"
 import Window from "@/widget/Window"
 import Gio from "gi://Gio"
 
+declare global {
+    const resource: string
+}
+
 @register({ GTypeName: "IconThemeBrowser" })
 export default class IconThemeBrowser extends Adw.Application {
     on_activate() {
@@ -19,7 +23,7 @@ export default class IconThemeBrowser extends Adw.Application {
 
     static main(args: string[]) {
         const app = new IconThemeBrowser({
-            application_id: "dev.aylur.icon-theme-browser",
+            application_id: pkg.name,
         })
 
         return app.runAsync(args)

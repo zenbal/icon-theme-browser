@@ -15,7 +15,7 @@ interface WindowProps extends Partial<Adw.ApplicationWindow.ConstructorProps> {
 
 @register({
     GTypeName: "Window",
-    Template: "resource:///dev/aylur/icon-theme-browser/ui/Window.ui",
+    Template: `${resource}/ui/Window.ui`,
     InternalChildren: ["flowbox", "view", "searchentry", "iconmenu", "toastoverlay"],
 })
 export default class Window extends Adw.ApplicationWindow {

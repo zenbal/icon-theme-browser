@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="@RESOURCE@">
+    <file>style.css</file>
+    <file>ui/Window.ui</file>
+    <file>ui/IconItem.ui</file>
+    <file>ui/ThemeMenuButton.ui</file>
+  </gresource>
+</gresources>
