@@ -4,7 +4,7 @@ configure_file(
   configuration: {
     'GJS': find_program('gjs').full_path(),
     'APP_ID': app_id,
-    'PACKAGE_VERSION': meson.project_version(),
+    'VERSION': meson.project_version(),
     'PREFIX': prefix,
     'RESOURCE': resource,
   },
@@ -16,20 +16,12 @@ bundle = custom_target(
   'bundle',
   input: files('main.ts'),
   command: [
-    find_program('esbuild'),
-    '--bundle', meson.project_source_root() / 'src/main.ts',
-    '--format=esm',
-    '--outfile='
-    + meson.project_build_root() / 'resource/icon-theme-browser.js',
-    '--external:console',
-    '--external:system',
-    '--external:cairo',
-    '--external:gettext',
-    '--external:resource://*',
-    '--external:gi://*',
-    '--external:file://*',
+    find_program('node'),
+    '../esbuild.js',
+    files('main.ts'),
+    meson.project_build_root() / 'resource/icon-theme-browser.js',
   ],
-  output: ['resource'],
+  output: ['icon-theme-browser.js'],
 )
 
 import('gnome').compile_resources(

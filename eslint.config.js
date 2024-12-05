@@ -10,10 +10,15 @@ export default tseslint.config({
             semi: false,
             indent: 4,
             quotes: "double",
+            jsx: true,
         }),
     ],
     rules: {
         "@typescript-eslint/no-explicit-any": "off",
         "@stylistic/new-parens": "off",
+        "@stylistic/brace-style": ["error", "1tbs", { allowSingleLine: true }],
+        "@stylistic/jsx-wrap-multilines ": ["off", {
+            assignment: "ignore",
+        }],
     },
 })

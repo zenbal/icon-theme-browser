@@ -15,6 +15,7 @@ nix run github:aylur/icon-theme-browser
 ```sh
 git clone https://github.com/Aylur/icon-theme-browser.git
 cd icon-theme-browser
+npm install
 meson setup --prefix /usr build
 meson install -C build
 ```
@@ -22,7 +23,6 @@ meson install -C build
 ## TODO
 
 - [ ] fuzzy query
-- [ ] preferences page
-- [ ] optimize somehow (currently lags when all icons are shown)
+- [x] preferences page
 - [ ] preset categories similar to [icon-library](https://gitlab.gnome.org/World/design/icon-library)
 - [ ] add desktop icon

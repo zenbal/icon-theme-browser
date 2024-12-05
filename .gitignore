@@ -1,5 +1,7 @@
 @girs/
 build/
+dist/
 result
 node_modules/
 test.sh
+_build/

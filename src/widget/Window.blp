@@ -1,0 +1,130 @@
+using Gtk 4.0;
+using Adw 1;
+
+menu menu {
+    item (_("Settings"), "app.preferences", "copy-symbolic")
+    item (_("About"), "app.about", "copy-symbolic")
+}
+
+template $Window: Adw.ApplicationWindow {
+    default-width: 600;
+    default-height: 500;
+    width-request: 360;
+    height-request: 300;
+    title: _("Icon Theme Browser");
+    selected-icon: "";
+    visible-child-name: "search";
+
+    Adw.ToolbarView view {
+        top-bar-style: raised;
+        bottom-bar-style: raised;
+
+        [top]
+        Adw.HeaderBar {
+            centering-policy: strict;
+
+            [start]
+            Button {
+                styles [
+                    "suggested-action",
+                ]
+
+                visible: bind $has_selected(template.selected-icon) as <bool>;
+                clicked => $copy_to_clipboard();
+
+                Box {
+                    spacing: 4;
+
+                    Image {
+                        icon-name: "edit-copy-symbolic";
+                    }
+
+                    Label {
+                        label: _("Copy");
+                    }
+                }
+            }
+
+            [title]
+            Adw.Clamp {
+                tightening-threshold: 400;
+                hexpand: true;
+
+                SearchEntry searchentry {
+                    search-delay: 200;
+                    placeholder-text: _("Search for icons by name");
+                    search-changed => $on_searchentry_search_changed();
+                    search-started => $on_searchentry_search_started();
+                }
+            }
+
+            [end]
+            MenuButton {
+                icon-name: "open-menu-symbolic";
+
+                popover: PopoverMenu {
+                    menu-model: menu;
+                };
+            }
+        }
+
+        Adw.ToastOverlay toastoverlay {
+            Gtk.ScrolledWindow {
+                hscrollbar-policy: never;
+                vscrollbar-policy: automatic;
+
+                Stack {
+                    visible-child-name: bind template.visible-child-name bidirectional;
+
+                    StackPage {
+                        name: "search";
+
+                        child: Adw.StatusPage {
+                            icon-name: "system-search-symbolic";
+                            title: _("Start typing to search");
+                            description: _("Search for icons by their name");
+                        };
+                    }
+
+                    StackPage {
+                        name: "grid";
+
+                        child: Adw.Bin {
+                            child: bind template.icon-box;
+                        };
+                    }
+
+                    StackPage {
+                        name: "not-found";
+
+                        child: Adw.StatusPage {
+                            icon-name: "system-search-symbolic";
+                            title: _("No Results found");
+                            description: _("Try a different search");
+                        };
+                    }
+                }
+            }
+        }
+
+        [bottom]
+        Box {
+            halign: center;
+            hexpand: true;
+            margin-top: 8;
+            margin-bottom: 8;
+            spacing: 12;
+            visible: bind $has_selected(template.selected-icon) as <bool>;
+
+            Image {
+                icon-name: bind template.selected-icon;
+                pixel-size: 24;
+            }
+
+            Label {
+                label: bind template.selected-icon;
+                selectable: true;
+            }
+        }
+    }
+}

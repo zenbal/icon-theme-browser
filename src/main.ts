@@ -1,31 +1,59 @@
-import { register } from "./lib/gobject"
+import { gettext as _ } from "gettext"
+import { register } from "gjsx/gobject"
+import { apply, css } from "gjsx/style"
 import Adw from "gi://Adw"
-import Window from "@/widget/Window"
+import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
+import Window from "./widget/Window"
+import Preferences from "./widget/Preferences"
+import { initialize_settings } from "./lib"
 
-declare global {
-    const resource: string
-}
+css`toast { background: black; }`
 
 @register({ GTypeName: "IconThemeBrowser" })
 export default class IconThemeBrowser extends Adw.Application {
+    window!: Window
+
+    constructor() {
+        super({ application_id: pkg.name })
+        this.set_action("about", this.show_about)
+        this.set_action("preferences", this.show_settings)
+    }
+
     on_activate() {
-        const win = new Window({
-            application: this,
-            app_settings: new Gio.Settings({
-                schema_id: pkg.name,
-            }),
+        initialize_settings()
+        apply()
+
+        if (!this.window)
+            this.window = new Window(this)
+
+        this.window.present()
+    }
+
+    set_action(name: string, callback: () => void) {
+        const action = new Gio.SimpleAction({ name })
+        action.connect("activate", callback.bind(this))
+        this.add_action(action)
+    }
+
+    show_settings() {
+        new Preferences().present(this.window)
+    }
+
+    show_about() {
+        const dialog = new Adw.AboutDialog({
+            application_name: _("Icon Theme Browser"),
+            application_icon: "application-x-executable",
+            developer_name: "Aylur",
+            issue_url: "https://github.com/aylur/icon-theme-browser",
+            version: pkg.version,
+            license_type: Gtk.License.MIT_X11,
         })
 
-        win.present()
-        win.update_list("")
+        dialog.present(this.window)
     }
 
     static main(args: string[]) {
-        const app = new IconThemeBrowser({
-            application_id: pkg.name,
-        })
-
-        return app.runAsync(args)
+        return new IconThemeBrowser().runAsync(args)
     }
 }

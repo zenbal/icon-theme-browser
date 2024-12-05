@@ -1,4 +1,7 @@
-project('icon-theme-browser')
+project(
+  'icon-theme-browser',
+  version: run_command('cat', meson.project_source_root() / 'version').stdout().strip(),
+)
 
 app_id = 'dev.aylur.icon-theme-browser'
 resource = '/dev/aylur/icon-theme-browser'
@@ -8,7 +11,9 @@ datadir = prefix / get_option('datadir')
 bindir = prefix / get_option('bindir')
 pkgdatadir = datadir / app_id
 
-dependency('gjs-1.0', version: '>= 1.80.0')
+find_program('node', required: true)
+find_program('blueprint-compiler', required: true)
+
 dependency('gtk4')
 dependency('libadwaita-1')
 

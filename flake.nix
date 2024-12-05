@@ -9,6 +9,9 @@
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
 
+    inherit (builtins) replaceStrings readFile;
+    version = replaceStrings ["\n"] [""] (readFile ./version);
+
     nativeBuildInputs = with pkgs; [
       wrapGAppsHook4
       gobject-introspection
@@ -16,8 +19,9 @@
       meson
       pkg-config
       ninja
-      esbuild
       desktop-file-utils
+      nodejs
+      gjs
     ];
 
     buildInputs = with pkgs; [
@@ -28,14 +32,30 @@
     ];
   in {
     packages.${system}.default = pkgs.stdenv.mkDerivation {
-      inherit buildInputs nativeBuildInputs;
+      inherit version buildInputs nativeBuildInputs;
       pname = "icon-theme-browser";
-      version = "0.1.0";
-      src = ./.;
+      src = pkgs.buildNpmPackage {
+        name = "source";
+        src = ./.;
+        npmDepsHash = "sha256-sJZyon8rJz33OyRedtYUcfY5LBNMLGV7/53onLny3jk=";
+        makeCacheWritable = true;
+        dontBuild = true;
+        installPhase = ''
+          mkdir -p $out
+          cp * -r $out
+        '';
+      };
     };
 
     devShells.${system}.default = pkgs.mkShell {
-      buildInputs = buildInputs ++ nativeBuildInputs;
+      packages =
+        buildInputs
+        ++ nativeBuildInputs
+        ++ (with pkgs; [
+          mesonlsp
+          vtsls
+          vscode-langservers-extracted
+        ]);
     };
   };
 }

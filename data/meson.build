@@ -1,34 +1,3 @@
-blueprints = custom_target(
-  'blueprints',
-  input: files(
-    'ui/IconItem.blp',
-    'ui/ThemeMenuButton.blp',
-    'ui/Window.blp',
-  ),
-  output: '.',
-  command: [
-    find_program('blueprint-compiler'),
-    'batch-compile',
-    '@OUTPUT@',
-    '@CURRENT_SOURCE_DIR@',
-    '@INPUT@',
-  ],
-)
-
-import('gnome').compile_resources(
-  app_id + '.data',
-  configure_file(
-    input: app_id + '.in.data.gresource.xml',
-    output: app_id + '.data.gresource.xml',
-    configuration: {'RESOURCE': resource},
-  ),
-  dependencies: blueprints,
-  source_dir: meson.project_build_root() / 'ui',
-  gresource_bundle: true,
-  install: true,
-  install_dir: pkgdatadir,
-)
-
 configure_file(
   input: app_id + '.in.desktop',
   output: app_id + '.desktop',
