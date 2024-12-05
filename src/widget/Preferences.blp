@@ -31,6 +31,24 @@ template $Preferences: Adw.PreferencesDialog {
                 title: _("Theme");
                 subtitle: _("Theme of the icons in the grid");
             }
+
+            Adw.ActionRow {
+                title: _("Color");
+                subtitle: _("What kind of icons to show");
+
+                DropDown {
+                    valign: center;
+                    selected: bind template.colored bidirectional;
+
+                    model: StringList {
+                        strings [
+                            "Both",
+                            "Symbolic Only",
+                            "Colored Only",
+                        ]
+                    };
+                }
+            }
         }
     }
 }

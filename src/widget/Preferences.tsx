@@ -10,18 +10,20 @@ import { get_settings, get_theme_names, get_theme, set_theme } from "@/lib"
 @register({ GTypeName: "Preferences", Template, InternalChildren: ["theme_names"] })
 export default class Preferences extends Adw.PreferencesDialog {
     @property(Number) declare icon_size: number
+    @property(Number) declare colored: number
 
     declare _theme_names: Adw.ActionRow
 
     constructor() {
-        super({ title: _("Browser Preferences") })
-
-        this.setup_theme_names()
         const { app } = get_settings()
 
-        for (const key of ["icon-size"]) {
-            app.bind(key, this, key, Gio.SettingsBindFlags.DEFAULT)
-        }
+        super({ title: _("Browser Preferences") })
+        this.colored = app.get_enum("colored")
+        this.setup_theme_names()
+
+        app.bind("icon-size", this, "icon-size", Gio.SettingsBindFlags.DEFAULT)
+        app.connect("changed::colored", () => this.colored = app.get_enum("colored"))
+        this.connect("notify::colored", () => app.set_enum("colored", this.colored))
     }
 
     setup_theme_names() {

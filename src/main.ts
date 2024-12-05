@@ -1,6 +1,6 @@
 import { gettext as _ } from "gettext"
 import { register } from "gjsx/gobject"
-import { apply, css } from "gjsx/style"
+import { apply, css as scss } from "gjsx/style"
 import Adw from "gi://Adw"
 import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
@@ -8,11 +8,17 @@ import Window from "./widget/Window"
 import Preferences from "./widget/Preferences"
 import { initialize_settings } from "./lib"
 
-css`toast { background: black; }`
+scss`
+toast {
+    background: black;
+}
+`
 
 @register({ GTypeName: "IconThemeBrowser" })
 export default class IconThemeBrowser extends Adw.Application {
     window!: Window
+    preferences!: Preferences
+    about!: Adw.AboutDialog
 
     constructor() {
         super({ application_id: pkg.name })
@@ -38,20 +44,25 @@ export default class IconThemeBrowser extends Adw.Application {
     }
 
     show_settings() {
-        new Preferences().present(this.window)
+        if (!this.preferences)
+            this.preferences = new Preferences()
+
+        this.preferences.present(this.window)
     }
 
     show_about() {
-        const dialog = new Adw.AboutDialog({
-            application_name: _("Icon Theme Browser"),
-            application_icon: "application-x-executable",
-            developer_name: "Aylur",
-            issue_url: "https://github.com/aylur/icon-theme-browser",
-            version: pkg.version,
-            license_type: Gtk.License.MIT_X11,
-        })
+        if (!this.about) {
+            this.about = new Adw.AboutDialog({
+                application_name: _("Icon Theme Browser"),
+                application_icon: "application-x-executable",
+                developer_name: "Aylur",
+                issue_url: "https://github.com/aylur/icon-theme-browser",
+                version: pkg.version,
+                license_type: Gtk.License.MIT_X11,
+            })
+        }
 
-        dialog.present(this.window)
+        this.about.present(this.window)
     }
 
     static main(args: string[]) {

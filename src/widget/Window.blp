@@ -69,40 +69,41 @@ template $Window: Adw.ApplicationWindow {
         }
 
         Adw.ToastOverlay toastoverlay {
-            Gtk.ScrolledWindow {
-                hscrollbar-policy: never;
-                vscrollbar-policy: automatic;
+            Stack {
+                visible-child-name: bind template.visible-child-name bidirectional;
 
-                Stack {
-                    visible-child-name: bind template.visible-child-name bidirectional;
+                StackPage {
+                    name: "search";
 
-                    StackPage {
-                        name: "search";
+                    child: Adw.StatusPage {
+                        icon-name: "system-search-symbolic";
+                        title: _("Start typing to search");
+                        description: _("Search for icons by their name");
+                    };
+                }
 
-                        child: Adw.StatusPage {
-                            icon-name: "system-search-symbolic";
-                            title: _("Start typing to search");
-                            description: _("Search for icons by their name");
-                        };
-                    }
+                StackPage {
+                    name: "grid";
 
-                    StackPage {
-                        name: "grid";
+                    child: Gtk.ScrolledWindow {
+                        vexpand: true;
+                        hscrollbar-policy: never;
+                        vscrollbar-policy: automatic;
 
-                        child: Adw.Bin {
+                        Adw.Bin {
                             child: bind template.icon-box;
-                        };
-                    }
+                        }
+                    };
+                }
 
-                    StackPage {
-                        name: "not-found";
+                StackPage {
+                    name: "not-found";
 
-                        child: Adw.StatusPage {
-                            icon-name: "system-search-symbolic";
-                            title: _("No Results found");
-                            description: _("Try a different search");
-                        };
-                    }
+                    child: Adw.StatusPage {
+                        icon-name: "system-search-symbolic";
+                        title: _("No Results found");
+                        description: _("Try a different search");
+                    };
                 }
             }
         }

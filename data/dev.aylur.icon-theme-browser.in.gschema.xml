@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <schemalist>
+  <enum id="@APP_ID@.symbolic">
+    <value nick="both" value="1"/>
+    <value nick="symbolic only" value="2"/>
+    <value nick="colored only" value="3"/>
+  </enum>
+
   <schema path="@RESOURCE@/" id="@APP_ID@">
     <key name="icon-size" type="i">
       <default>28</default>
@@ -8,6 +14,9 @@
     <key name="theme-name" type="s">
       <default>"Adwaita"</default>
       <summary>Theme of the icons</summary>
+    </key>
+    <key name="colored" enum="@APP_ID@.symbolic">
+      <default>'both'</default>
     </key>
   </schema>
 </schemalist>

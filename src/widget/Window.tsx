@@ -3,7 +3,7 @@ import Gtk from "gi://Gtk"
 import WindowTemplate from "./Window.blp"
 import IconBox from "./IconBox"
 import { property, register } from "gjsx/gobject"
-import { copy_to_clipboard, search_icons } from "@/lib"
+import { get_settings, copy_to_clipboard, search_icons } from "@/lib"
 import { gettext as _ } from "gettext"
 
 @register({
@@ -27,6 +27,10 @@ export default class Window extends Adw.ApplicationWindow {
                 this.selected_icon = icon
                 this.copy_to_clipboard()
             },
+        })
+
+        get_settings().app.connect("changed::colored", () => {
+            this._searchentry.emit("search-changed")
         })
     }
 

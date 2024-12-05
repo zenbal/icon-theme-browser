@@ -1,6 +1,7 @@
 import Gtk from "gi://Gtk"
 import Gdk from "gi://Gdk"
 import GLib from "gi://GLib"
+import { get_settings, Colored } from "./settings"
 
 function get_theme() {
     return Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!)
@@ -45,12 +46,19 @@ export function get_theme_names() {
         || []
 }
 
-export function search_icons(search: string, limit = 0) {
-    const names = get_theme().icon_names
-        .filter(name => name.includes(search))
-        .sort()
+export function search_icons(search: string) {
+    const symbolic: Colored = get_settings().app.get_enum("colored")
 
-    return limit > 0
-        ? names.slice(0, limit)
-        : names
+    return get_theme().icon_names
+        .filter(name => name.includes(search))
+        .filter((name) => {
+            if (symbolic === Colored.SYMBOLIC_ONLY)
+                return name.endsWith("-symbolic")
+
+            if (symbolic === Colored.COLORED_ONLY)
+                return !name.endsWith("-symbolic")
+
+            return true
+        })
+        .sort()
 }

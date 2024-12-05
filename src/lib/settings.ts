@@ -4,6 +4,12 @@ import { get_theme_names } from "./icon"
 
 let app_settings: Gio.Settings
 
+export enum Colored {
+    BOTH,
+    SYMBOLIC_ONLY,
+    COLORED_ONLY,
+}
+
 export function get_settings() {
     if (!app_settings)
         app_settings = new Gio.Settings({ schema_id: pkg.name })
