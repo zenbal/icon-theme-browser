@@ -18,6 +18,7 @@ export default class IconThemeBrowser extends Adw.Application {
         super({ application_id: pkg.name })
         this.set_action("about", this.show_about)
         this.set_action("preferences", this.show_settings)
+        this.set_accels_for_action("app.preferences", ["<Control>comma"])
     }
 
     on_activate() {
