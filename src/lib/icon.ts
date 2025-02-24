@@ -1,30 +1,30 @@
 import Gtk from "gi://Gtk"
 import Gdk from "gi://Gdk"
 import GLib from "gi://GLib"
-import { get_settings, Colored } from "./settings"
+import { getSettings, Colored } from "./settings"
 
-function get_theme() {
+function getTheme() {
     return Gtk.IconTheme.get_for_display(Gdk.Display.get_default()!)
 }
 
-function is_dir(...path: string[]) {
+function isDir(...path: string[]) {
     return GLib.file_test(
         GLib.build_filenamev(path),
         GLib.FileTest.IS_DIR,
     )
 }
 
-function is_file(...path: string[]) {
+function isFile(...path: string[]) {
     return GLib.file_test(
         GLib.build_filenamev(path),
         GLib.FileTest.IS_REGULAR | GLib.FileTest.IS_SYMLINK,
     )
 }
 
-export function get_theme_names() {
-    return get_theme().get_search_path()
+export function getThemeNames() {
+    return getTheme().get_search_path()
         ?.flatMap((path) => {
-            if (!is_dir(path)) {
+            if (!isDir(path)) {
                 return []
             }
 
@@ -33,7 +33,7 @@ export function get_theme_names() {
 
             let name: string
             while ((name = dir.read_name()) !== null) {
-                if (is_dir(path, name) && is_file(path, name, "index.theme"))
+                if (isDir(path, name) && isFile(path, name, "index.theme"))
                     names.push(name)
             }
 
@@ -46,10 +46,10 @@ export function get_theme_names() {
         || []
 }
 
-export function search_icons(search: string) {
-    const symbolic: Colored = get_settings().app.get_enum("colored")
+export function searchIcons(search: string) {
+    const symbolic: Colored = getSettings().app.get_enum("colored")
 
-    return get_theme().icon_names
+    return getTheme().icon_names
         .filter(name => name.includes(search))
         .filter((name) => {
             if (symbolic === Colored.SYMBOLIC_ONLY)

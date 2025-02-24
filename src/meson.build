@@ -16,10 +16,14 @@ bundle = custom_target(
   'bundle',
   input: files('main.ts'),
   command: [
-    find_program('node'),
-    '../esbuild.js',
-    files('main.ts'),
-    meson.project_build_root() / 'resource/icon-theme-browser.js',
+    find_program('esbuild', required: true),
+    '--bundle', files('main.ts'),
+    '--format=esm',
+    '--outfile='
+    + meson.project_build_root() / 'resource/icon-theme-browser.js',
+    '--sourcemap=inline',
+    '--external:gi://*',
+    '--external:gettext',
   ],
   output: ['icon-theme-browser.js'],
 )

@@ -15,13 +15,11 @@
     nativeBuildInputs = with pkgs; [
       wrapGAppsHook4
       gobject-introspection
-      blueprint-compiler
       meson
       pkg-config
       ninja
       desktop-file-utils
-      nodejs
-      gjs
+      esbuild
     ];
 
     buildInputs = with pkgs; [
@@ -37,7 +35,7 @@
       src = pkgs.buildNpmPackage {
         name = "source";
         src = ./.;
-        npmDepsHash = "sha256-sJZyon8rJz33OyRedtYUcfY5LBNMLGV7/53onLny3jk=";
+        npmDepsHash = "sha256-Hox87pUKUvMVHO7gRrFw8KXJDvRVb5VuBySPh+tzsIQ=";
         makeCacheWritable = true;
         dontBuild = true;
         installPhase = ''

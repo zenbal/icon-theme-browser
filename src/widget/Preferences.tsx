@@ -1,49 +1,71 @@
 import Adw from "gi://Adw"
-import Gio from "gi://Gio"
 import Gtk from "gi://Gtk"
 import Gdk from "gi://Gdk"
-import Template from "./Preferences.blp"
 import { gettext as _ } from "gettext"
-import { register, property } from "gjsx/gobject"
-import { get_settings, get_theme_names, get_theme, set_theme } from "@/lib"
+import { getSettings, getThemeNames, getTheme, setTheme } from "@/lib"
+import { jsx } from "gjsx/gtk4"
+import { bind } from "gjsx/state"
 
-@register({ GTypeName: "Preferences", Template, InternalChildren: ["theme_names"] })
-export default class Preferences extends Adw.PreferencesDialog {
-    @property(Number) declare icon_size: number
-    @property(Number) declare colored: number
+export default function Preferences() {
+    let dialog: Adw.PreferencesDialog
+    const { app: settings } = getSettings()
+    const themes = getThemeNames()
 
-    declare _theme_names: Adw.ActionRow
-
-    constructor() {
-        const { app } = get_settings()
-
-        super({ title: _("Browser Preferences") })
-        this.colored = app.get_enum("colored")
-        this.setup_theme_names()
-
-        app.bind("icon-size", this, "icon-size", Gio.SettingsBindFlags.DEFAULT)
-        app.connect("changed::colored", () => this.colored = app.get_enum("colored"))
-        this.connect("notify::colored", () => app.set_enum("colored", this.colored))
-    }
-
-    setup_theme_names() {
-        const themes = get_theme_names()
-        const dropdown = Gtk.DropDown.new_from_strings(themes)
-
-        dropdown.enable_search = true
-        dropdown.valign = Gtk.Align.CENTER
-        dropdown.set_selected(themes.findIndex(v => v == get_theme()))
-        dropdown.connect("notify::selected", () => {
-            set_theme(themes[dropdown.selected])
-        })
-
-        this._theme_names.add_suffix(dropdown)
-        this._theme_names.activatable_widget = dropdown
-    }
-
-    on_key_pressed(_: Gtk.EventControllerKey, keyval: number) {
+    function onKeyPressed(_: Gtk.EventControllerKey, keyval: number) {
         if (keyval === Gdk.KEY_Escape) {
-            this.close()
+            dialog.close()
         }
     }
+
+    return (
+        <Adw.PreferencesDialog
+            $={self => dialog = self}
+            title={_("Browser Preferences")}
+        >
+            <Gtk.EventControllerKey $key-pressed={onKeyPressed} />
+            <Adw.PreferencesPage title={_("Browser Preferences")}>
+                <Adw.PreferencesGroup>
+                    <Adw.SpinRow
+                        title={_("Icon Size")}
+                        subtitle={_("Size of the icons in the grid")}
+                        adjustment={jsx(Gtk.Adjustment, {
+                            lower: 8,
+                            upper: 128,
+                            stepIncrement: 1,
+                            pageIncrement: 4,
+                            value: bind<number>(settings, "icon-size"),
+                            $_value: ({ value }) => settings.set_int("icon-size", value),
+                        })}
+                    />
+                    <Adw.ActionRow
+                        title={_("Theme")}
+                        subtitle={_("Theme of the icons in the grid")}
+                    >
+                        <Gtk.DropDown
+                            enableSearch
+                            valign={Gtk.Align.CENTER}
+                            selected={themes.findIndex(v => v == getTheme())}
+                            $_selected={({ selected }) => setTheme(themes[selected])}
+                            _constructor={() => Gtk.DropDown.new_from_strings(themes)}
+                        />
+                    </Adw.ActionRow>
+                    <Adw.ActionRow
+                        title={_("Color")}
+                        subtitle={_("What kind of icons to show")}
+                    >
+                        <Gtk.DropDown
+                            valign={Gtk.Align.CENTER}
+                            selected={bind<number>(settings, "colored")}
+                            $_selected={({ selected }) => settings.set_enum("colored", selected)}
+                            _constructor={() => Gtk.DropDown.new_from_strings([
+                                _("Both"),
+                                _("Symbolic Only"),
+                                _("Colored Only"),
+                            ])}
+                        />
+                    </Adw.ActionRow>
+                </Adw.PreferencesGroup>
+            </Adw.PreferencesPage>
+        </Adw.PreferencesDialog>
+    )
 }

@@ -11,9 +11,6 @@ datadir = prefix / get_option('datadir')
 bindir = prefix / get_option('bindir')
 pkgdatadir = datadir / app_id
 
-find_program('node', required: true)
-find_program('blueprint-compiler', required: true)
-
 dependency('gtk4')
 dependency('libadwaita-1')
 

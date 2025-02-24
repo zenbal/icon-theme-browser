@@ -1,11 +1,11 @@
 import Gtk from "gi://Gtk"
-import Gio from "gi://Gio"
-import GObject from "gi://GObject"
-import { css as scss } from "gjsx/style"
+import { css } from "gjsx/gtk4/style"
 import { register, property } from "gjsx/gobject"
-import { get_settings } from "@/lib"
+import { getSettings } from "@/lib"
+import { jsx } from "gjsx/gtk4"
+import { bind } from "gjsx/state"
 
-scss`
+css`
 flowboxchild.icon-item {
     margin: 0;
     padding: 0;
@@ -31,28 +31,18 @@ flowboxchild.icon-item:selected {
 
 @register({ GTypeName: "IconItem" })
 export default class IconItem extends Gtk.FlowBoxChild {
-    @property(String) declare icon_name: string
+    @property(String) declare iconName: string
 
-    constructor(icon?: string) {
-        super({
-            child: new Gtk.Image(),
-            css_classes: ["icon-item"],
+    constructor({ icon }: { icon?: string }) {
+        super()
+
+        const { app } = getSettings()
+        this.add_css_class("icon-item")
+        if (icon) this.iconName = icon
+
+        this.child = jsx(Gtk.Image, {
+            iconName: bind(this, "iconName"),
+            pixelSize: bind<number>(app, "icon-size"),
         })
-
-        if (icon) this.icon_name = icon
-
-        this.bind_property(
-            "icon-name",
-            this.child,
-            "icon-name",
-            GObject.BindingFlags.SYNC_CREATE,
-        )
-
-        get_settings().app.bind(
-            "icon-size",
-            this.child,
-            "pixel-size",
-            Gio.SettingsBindFlags.DEFAULT,
-        )
     }
 }

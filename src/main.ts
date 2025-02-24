@@ -1,14 +1,14 @@
 import { gettext as _ } from "gettext"
 import { register } from "gjsx/gobject"
-import { apply, css as scss } from "gjsx/style"
+import { apply, css } from "gjsx/gtk4/style"
 import Adw from "gi://Adw"
 import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
 import Window from "./widget/Window"
 import Preferences from "./widget/Preferences"
-import { initialize_settings } from "./lib"
+import { initializeSettings } from "./lib"
 
-scss`
+css`
 toast {
     background: black;
 }
@@ -16,41 +16,41 @@ toast {
 
 @register({ GTypeName: "IconThemeBrowser" })
 export default class IconThemeBrowser extends Adw.Application {
-    window!: Window
-    preferences!: Preferences
+    window!: Adw.ApplicationWindow
+    preferences!: Adw.PreferencesDialog
     about!: Adw.AboutDialog
 
     constructor() {
         super({ application_id: pkg.name })
-        this.set_action("about", this.show_about)
-        this.set_action("preferences", this.show_settings)
+        this.setAction("about", this.showAbout)
+        this.setAction("preferences", this.showSettings)
         this.set_accels_for_action("app.preferences", ["<Control>comma"])
     }
 
-    on_activate() {
-        initialize_settings()
+    vfunc_activate() {
+        initializeSettings()
         apply()
 
         if (!this.window)
-            this.window = new Window(this)
+            this.window = Window({ app: this }) as Adw.ApplicationWindow
 
         this.window.present()
     }
 
-    set_action(name: string, callback: () => void) {
+    setAction(name: string, callback: () => void) {
         const action = new Gio.SimpleAction({ name })
         action.connect("activate", callback.bind(this))
         this.add_action(action)
     }
 
-    show_settings() {
+    showSettings() {
         if (!this.preferences)
-            this.preferences = new Preferences()
+            this.preferences = Preferences() as Adw.PreferencesDialog
 
         this.preferences.present(this.window)
     }
 
-    show_about() {
+    showAbout() {
         if (!this.about) {
             this.about = new Adw.AboutDialog({
                 application_name: _("Icon Theme Browser"),
