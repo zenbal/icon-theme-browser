@@ -5,7 +5,12 @@ import IconBox from "./IconBox"
 import { copyToClipboard, getSettings, searchIcons } from "@/lib"
 import { gettext as _ } from "gettext"
 import { State } from "gjsx/state"
-import { jsx } from "gjsx/gtk4/jsx-runtime"
+
+const Page = {
+    SEARCH: "search",
+    GRID: "grid",
+    NOT_FOUND: "not-found",
+}
 
 const menu = [
     [_("Settings"), "app.preferences", "copy-symbolic"],
@@ -25,10 +30,10 @@ export default function Window({ app }: { app: Gtk.Application }) {
         selectedIcon.set("")
 
         if (text === "") {
-            stack.visibleChildName = "search"
+            stack.visibleChildName = Page.SEARCH
         } else {
             icons.set(searchIcons(text))
-            stack.visibleChildName = icons.get().length > 0 ? "grid" : "not-found"
+            stack.visibleChildName = icons.get().length > 0 ? Page.GRID : Page.NOT_FOUND
         }
     }
 
@@ -94,46 +99,45 @@ export default function Window({ app }: { app: Gtk.Application }) {
                     <Gtk.MenuButton
                         _type="end"
                         iconName="open-menu-symbolic"
-                        popover={Gtk.PopoverMenu.new_from_model(jsx(Gio.Menu, {
-                            $: self => menu.map(([label, action, icon]) => {
-                                const item = Gio.MenuItem.new(label, action)
-                                item.set_icon(Gio.Icon.new_for_string(icon))
-                                self.append_item(item)
-                            })
-                        }))}
-                    />
+                    >
+                        <Gtk.PopoverMenu>
+                            <Gio.Menu
+                                $={self => menu.map(([label, action, icon]) => {
+                                    const item = Gio.MenuItem.new(label, action)
+                                    item.set_icon(Gio.Icon.new_for_string(icon))
+                                    self.append_item(item)
+                                })}
+                            />
+                        </Gtk.PopoverMenu>
+                    </Gtk.MenuButton>
                 </Adw.HeaderBar>
                 <Adw.ToastOverlay $={self => toasts = self}>
                     <Gtk.Stack $={self => stack = self}>
-                        <Gtk.StackPage
-                            name="search"
-                            child={jsx(Adw.StatusPage, {
-                                iconName: "system-search-symbolic",
-                                title: _("Start typing to search"),
-                                description: _("Search for icons by their name"),
-                            })}
+                        <Adw.StatusPage
+                            _type="named"
+                            name={Page.SEARCH}
+                            iconName="system-search-symbolic"
+                            title={_("Start typing to search")}
+                            description={_("Search for icons by their name")}
                         />
-                        <Gtk.StackPage
-                            name="grid"
-                            child={jsx(Gtk.ScrolledWindow, {
-                                vexpand: true,
-                                hscrollbarPolicy: Gtk.PolicyType.NEVER,
-                                vscrollbarPolicy: Gtk.PolicyType.AUTOMATIC,
-                                children: <Adw.Bin>
-                                    <IconBox
-                                        icons={icons()}
-                                        onSelected={select}
-                                    />
-                                </Adw.Bin>
-                            })}
-                        />
-                        <Gtk.StackPage
-                            name="not-found"
-                            child={jsx(Adw.StatusPage, {
-                                iconName: "system-search-symbolic",
-                                title: _("No Results found"),
-                                description: _("Try a different search"),
-                            })}
+                        <Gtk.ScrolledWindow
+                            _type="named"
+                            name={Page.GRID}
+                            vexpand
+                            hscrollbarPolicy={Gtk.PolicyType.NEVER}
+                            vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
+                        >
+                            <IconBox
+                                icons={icons()}
+                                onSelected={select}
+                            />
+                        </Gtk.ScrolledWindow>
+                        <Adw.StatusPage
+                            _type="named"
+                            name={Page.NOT_FOUND}
+                            iconName="system-search-symbolic"
+                            title={_("No Results found")}
+                            description={_("Try a different search")}
                         />
                     </Gtk.Stack>
                 </Adw.ToastOverlay>

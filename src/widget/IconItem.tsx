@@ -2,7 +2,7 @@ import Gtk from "gi://Gtk"
 import { css } from "gjsx/gtk4/style"
 import { register, property } from "gjsx/gobject"
 import { getSettings } from "@/lib"
-import { jsx } from "gjsx/gtk4"
+import { This } from "gjsx/gtk4"
 import { bind } from "gjsx/state"
 
 css`
@@ -35,14 +35,21 @@ export default class IconItem extends Gtk.FlowBoxChild {
 
     constructor({ icon }: { icon?: string }) {
         super()
-
-        const { app } = getSettings()
         this.add_css_class("icon-item")
         if (icon) this.iconName = icon
+        this.render()
+    }
 
-        this.child = jsx(Gtk.Image, {
-            iconName: bind(this, "iconName"),
-            pixelSize: bind<number>(app, "icon-size"),
-        })
+    private render() {
+        const { app } = getSettings()
+
+        return (
+            <This this={this}>
+                <Gtk.Image
+                    iconName={bind(this, "iconName")}
+                    pixelSize={bind<number>(app, "icon-size")}
+                />
+            </This>
+        )
     }
 }

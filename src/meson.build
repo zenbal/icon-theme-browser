@@ -1,5 +1,5 @@
 configure_file(
-  input: app_id + '.in.ts',
+  input: app_id + '.in.js',
   output: app_id,
   configuration: {
     'GJS': find_program('gjs').full_path(),
