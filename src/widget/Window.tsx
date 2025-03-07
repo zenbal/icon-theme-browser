@@ -92,23 +92,22 @@ export default function Window({ app }: { app: Gtk.Application }) {
                             $={self => entry = self}
                             searchDelay={200}
                             placeholderText={_("Search for icons by name")}
-                            $search-changed={search}
-                            $search-started={self => self.grab_focus()}
+                            $searchChanged={search}
+                            $searchStarted={self => self.grab_focus()}
                         />
                     </Adw.Clamp>
                     <Gtk.MenuButton
                         _type="end"
                         iconName="open-menu-symbolic"
                     >
-                        <Gtk.PopoverMenu>
-                            <Gio.Menu
-                                $={self => menu.map(([label, action, icon]) => {
-                                    const item = Gio.MenuItem.new(label, action)
-                                    item.set_icon(Gio.Icon.new_for_string(icon))
-                                    self.append_item(item)
-                                })}
-                            />
-                        </Gtk.PopoverMenu>
+                        <Gio.Menu
+                            $={self => menu.map(([label, action, icon]) => {
+                                print(label)
+                                const item = Gio.MenuItem.new(label, action)
+                                item.set_icon(Gio.Icon.new_for_string(icon))
+                                self.append_item(item)
+                            })}
+                        />
                     </Gtk.MenuButton>
                 </Adw.HeaderBar>
                 <Adw.ToastOverlay $={self => toasts = self}>

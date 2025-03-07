@@ -39,7 +39,7 @@ export default function IconBox({ onSelected, icons }: IconBoxProps) {
             maxChildrenPerLine={99}
             $childActivated={childActivated}
         >
-            <Gtk.EventControllerKey $key-pressed={onKeyPressed} />
+            <Gtk.EventControllerKey $keyPressed={onKeyPressed} />
             <For each={arr} cleanup={item => item.run_dispose()}>
                 {({ icon }) => (<IconItem icon={icon} />)}
             </For>

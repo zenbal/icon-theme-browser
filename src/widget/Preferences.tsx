@@ -34,7 +34,7 @@ export default function Preferences() {
                             stepIncrement={1}
                             pageIncrement={4}
                             value={bind<number>(settings, "icon-size")}
-                            $_value={({ value }) => settings.set_int("icon-size", value)}
+                            $$value={({ value }) => settings.set_int("icon-size", value)}
                         />
                     </Adw.SpinRow>
                     <Adw.ActionRow
@@ -46,7 +46,7 @@ export default function Preferences() {
                             valign={Gtk.Align.CENTER}
                             model={Gtk.StringList.new(themes)}
                             selected={themes.findIndex(v => v == getTheme())}
-                            $_selected={({ selected }) => setTheme(themes[selected])}
+                            $$selected={({ selected }) => setTheme(themes[selected])}
                         />
                     </Adw.ActionRow>
                     <Adw.ActionRow
@@ -61,7 +61,7 @@ export default function Preferences() {
                                 _("Colored Only"),
                             ])}
                             selected={bind<string>(settings, "colored").as(() => settings.get_enum("colored"))}
-                            $_selected={({ selected }) => settings.set_enum("colored", selected)}
+                            $$selected={({ selected }) => settings.set_enum("colored", selected)}
                         />
                     </Adw.ActionRow>
                 </Adw.PreferencesGroup>
