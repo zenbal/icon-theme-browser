@@ -13,6 +13,6 @@ pkg.initGettext()
 
 const resource = "resource://@RESOURCE@"
 
-const module = await import(`${resource}/icon-theme-browser.js`)
+const module = await import(`${resource}/icon-browser.js`)
 const exitCode = await module.default.main([programInvocationName, ...programArgs])
 exit(exitCode)

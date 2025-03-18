@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Icon Theme Library
+Name=Icon Browser
 Comment=Find the right icon to use in your application
 Type=Application
 Exec=@EXEC@

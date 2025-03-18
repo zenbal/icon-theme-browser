@@ -31,11 +31,11 @@
   in {
     packages.${system}.default = pkgs.stdenv.mkDerivation {
       inherit version buildInputs nativeBuildInputs;
-      pname = "icon-theme-browser";
+      pname = "icon-browser";
       src = pkgs.buildNpmPackage {
         name = "source";
         src = ./.;
-        npmDepsHash = "sha256-fqSjko9sEC6GNyXjPQXZSSeo2ghzYX/3ZRVU1bSeNEU=";
+        npmDepsHash = "sha256-bEFryifbq3pa7Qu9ydHfiKd5KKgO248aDIOK4vrRXi4=";
         makeCacheWritable = true;
         dontBuild = true;
         installPhase = ''

@@ -20,12 +20,12 @@ bundle = custom_target(
     '--bundle', files('main.ts'),
     '--format=esm',
     '--outfile='
-    + meson.project_build_root() / 'resource/icon-theme-browser.js',
+    + meson.project_build_root() / 'resource/icon-browser.js',
     '--sourcemap=inline',
     '--external:gi://*',
     '--external:gettext',
   ],
-  output: ['icon-theme-browser.js'],
+  output: ['icon-browser.js'],
 )
 
 import('gnome').compile_resources(

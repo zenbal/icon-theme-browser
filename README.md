@@ -1,20 +1,20 @@
-# Icon Theme Browser
+# Icon Browser
 
 A simple application that lets you browse the icons of your icon themes.
 
-![dark](https://github.com/Aylur/icon-theme-browser/blob/main/data/screenshots/dark.png)
+![dark](https://github.com/Aylur/icon-browser/blob/main/data/screenshots/dark.png)
 
 ## Nix
 
 ```sh
-nix run github:aylur/icon-theme-browser
+nix run github:aylur/icon-browser
 ```
 
 ## Install from source
 
 ```sh
-git clone https://github.com/Aylur/icon-theme-browser.git
-cd icon-theme-browser
+git clone https://github.com/Aylur/icon-browser.git
+cd icon-browser
 npm install
 meson setup --prefix /usr build
 meson install -C build

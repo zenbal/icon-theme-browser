@@ -8,7 +8,7 @@
 
   <schema path="@RESOURCE@/" id="@APP_ID@">
     <key name="icon-size" type="i">
-      <default>28</default>
+      <default>52</default>
       <summary>Size of icons in the list view.</summary>
     </key>
     <key name="theme-name" type="s">

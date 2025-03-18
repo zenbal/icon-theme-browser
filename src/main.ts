@@ -8,11 +8,7 @@ import Window from "./widget/Window"
 import Preferences from "./widget/Preferences"
 import { initializeSettings } from "./lib"
 
-css`
-toast {
-    background: black;
-}
-`
+css`toast { background: black; }`
 
 @register({ GTypeName: "IconThemeBrowser" })
 export default class IconThemeBrowser extends Adw.Application {
@@ -53,10 +49,10 @@ export default class IconThemeBrowser extends Adw.Application {
     showAbout() {
         if (!this.about) {
             this.about = new Adw.AboutDialog({
-                application_name: _("Icon Theme Browser"),
+                application_name: _("Icon Browser"),
                 application_icon: "application-x-executable",
                 developer_name: "Aylur",
-                issue_url: "https://github.com/aylur/icon-theme-browser",
+                issue_url: "https://github.com/aylur/icon-browser",
                 version: pkg.version,
                 license_type: Gtk.License.MIT_X11,
             })

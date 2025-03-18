@@ -1,10 +1,10 @@
 project(
-  'icon-theme-browser',
+  'icon-browser',
   version: run_command('cat', meson.project_source_root() / 'version').stdout().strip(),
 )
 
-app_id = 'dev.aylur.icon-theme-browser'
-resource = '/dev/aylur/icon-theme-browser'
+app_id = 'dev.aylur.icon-browser'
+resource = '/dev/aylur/icon-browser'
 
 prefix = get_option('prefix')
 datadir = prefix / get_option('datadir')

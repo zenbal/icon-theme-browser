@@ -62,7 +62,7 @@ export default function Window({ app }: { app: Gtk.Application }) {
             defaultHeight={500}
             widthRequest={360}
             heightRequest={300}
-            title={_("Icon Theme Browser")}
+            title={_("Icon Browser")}
         >
             <Adw.ToolbarView
                 topBarStyle={Adw.ToolbarStyle.RAISED}
