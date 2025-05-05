@@ -16,7 +16,7 @@ nix run github:aylur/icon-browser
 git clone https://github.com/Aylur/icon-browser.git
 cd icon-browser
 npm install
-meson setup --prefix /usr build
+meson setup build
 meson install -C build
 ```
 

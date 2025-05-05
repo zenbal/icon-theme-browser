@@ -1,31 +1,33 @@
 {
-    "name": "icon-browser",
-    "version": "0.2.0",
-    "type": "module",
-    "author": "Aylur",
-    "license": "GPL",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Aylur/icon-browser.git"
-    },
-    "funding": {
-        "type": "kofi",
-        "url": "https://ko-fi.com/aylur"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.16.0",
-        "@girs/adw-1": "latest",
-        "@stylistic/eslint-plugin": "^2.11.0",
-        "@types/eslint__js": "^8.42.3",
-        "esbuild": "^0.24.0",
-        "eslint": "^8.57.1",
-        "typescript": "^5.7.2",
-        "typescript-eslint": "^7.18.0"
-    },
-    "scripts": {
-        "lint": "eslint . --fix"
-    },
-    "dependencies": {
-        "gjsx": "github:aylur/gjsx"
-    }
+  "name": "icon-browser",
+  "type": "module",
+  "author": "Aylur",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aylur/icon-browser.git"
+  },
+  "funding": {
+    "type": "kofi",
+    "url": "https://ko-fi.com/aylur"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@girs/adw-1": "latest",
+    "esbuild": "latest",
+    "eslint": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest"
+  },
+  "scripts": {
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "gjsx": "github:aylur/gjsx"
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 2,
+    "printWidth": 100
+  }
 }

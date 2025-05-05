@@ -7,6 +7,10 @@
   </enum>
 
   <schema path="@RESOURCE@/" id="@APP_ID@">
+    <key name="show-all" type="b">
+      <default>false</default>
+      <summary>Show all available icons</summary>
+    </key>
     <key name="icon-size" type="i">
       <default>52</default>
       <summary>Size of icons in the list view.</summary>

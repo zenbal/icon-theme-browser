@@ -1,12 +1,13 @@
 #!@GJS@ -m
+/* eslint-disable no-undef */
 
 import { exit, programArgs, programInvocationName } from "system"
 
 imports.package.init({
-    name: "@APP_ID@",
-    version: "@VERSION@",
-    prefix: "@PREFIX@",
-    libdir: "@LIBDIR@",
+  name: "@APP_ID@",
+  version: "@VERSION@",
+  prefix: "@PREFIX@",
+  libdir: "@LIBDIR@",
 })
 
 pkg.initGettext()

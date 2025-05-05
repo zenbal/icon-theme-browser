@@ -19,10 +19,10 @@ bundle = custom_target(
     find_program('esbuild', required: true),
     '--bundle', files('main.ts'),
     '--format=esm',
-    '--outfile='
-    + meson.project_build_root() / 'resource/icon-browser.js',
+    '--outfile=' + meson.project_build_root() / 'resource/icon-browser.js',
     '--sourcemap=inline',
     '--external:gi://*',
+    '--external:resource://*',
     '--external:gettext',
   ],
   output: ['icon-browser.js'],
