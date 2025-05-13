@@ -1,6 +1,7 @@
 import Adw from "gi://Adw"
 import Gtk from "gi://Gtk"
 import Gio from "gi://Gio"
+import GLib from "gi://GLib"
 import IconBox from "./IconBox"
 import { copyToClipboard, getSettings, Schmea, searchIcons } from "@/lib"
 import { gettext as _ } from "gettext"
@@ -36,6 +37,24 @@ export default function Window({ app }: { app: Gtk.Application }) {
       icons.set(searchIcons(text))
       stack.visibleChildName = icons.get().length > 0 ? Page.GRID : Page.NOT_FOUND
     }
+  }
+
+  let timeoutId: number | null = null
+  const debounceDelay = 200
+
+  function debouncedSearch(entry: Gtk.SearchEntry) {
+    entry.grab_focus()
+    selectedIcon.set("")
+
+    if (timeoutId !== null) {
+      GLib.source_remove(timeoutId)
+    }
+
+    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, debounceDelay, () => {
+      search(entry)
+      timeoutId = null
+      return GLib.SOURCE_REMOVE
+    })
   }
 
   function select(icon?: string) {
@@ -86,9 +105,8 @@ export default function Window({ app }: { app: Gtk.Application }) {
           <Adw.Clamp _type="title" tighteningThreshold={400} hexpand>
             <Gtk.SearchEntry
               $={(self) => (entry = self)}
-              searchDelay={200}
               placeholderText={_("Search for icons by name")}
-              $searchChanged={search}
+              $searchChanged={debouncedSearch}
               $searchStarted={(self) => self.grab_focus()}
             />
           </Adw.Clamp>
